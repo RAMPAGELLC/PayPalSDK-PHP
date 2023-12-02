@@ -78,4 +78,26 @@ class PayPal {
         curl_close($ch);
         return $response;
     }
+
+    public function Refund(string $transactionId, string|float $total, string $currency = "USD", string $note = "Refund for the transaction.")
+    {
+        $payload = [
+            "amount" => [
+                "currency" => $currency,
+                "total" => $total,
+            ],
+            "note" => $note,
+        ];
+
+        $url = $this->base . "/v1/payments/sale/$transactionId/refund";
+
+        return $this->fetch($url, [
+            "method" => "POST",
+            "headers" => [
+                "Content-Type" => "application/json",
+                "Authorization" => "Bearer " . $this->bearerToken,
+            ],
+            "body" => json_encode($payload),
+        ]);
+    }
 }

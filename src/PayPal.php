@@ -15,8 +15,10 @@ class PayPal {
     public function __construct(string $PAYPAL_CLIENT_ID, string $PAYPAL_CLIENT_SECRET) {
         $this->paypalClientId = $PAYPAL_CLIENT_ID;
         $this->paypalClientSecret = $PAYPAL_CLIENT_SECRET;
-        $this->base = $this->environment == "live" ? "https://api-m.paypal.com" : "https://api-m.sandbox.paypal.com";
+        $this->base = "https://api-m.paypal.com";
         
+        if ($this->environment == "sandbox") $this->base = "https://api-m.sandbox.paypal.com";
+            
         $response = $this->fetch($this->base . "/v1/oauth2/token", [
             "method" => "POST",
             "body" => "grant_type=client_credentials",
